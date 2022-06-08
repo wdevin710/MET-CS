@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "# RSNNS Examples\n# ftp://ftp.sas.com/pub/neural/FAQ2.html#A_art - genaral nunet info\nlibrary(\"RSNNS\", lib.loc=\"~/R/win-library/3.2\")\n\n# demo() # See all the demos in R \n# Load the Data (more data @  http://sci2s.ugr.es/keel/datasets.php)\ndata(\"snnsData\") \nlaser <- snnsData$laser_1000.pat \n\n# Spliting the Data \ninputs <- laser[,inputColumns(laser)] # Extracts all columns from a matrix whose column names begin with \"in\"\ntargets <- laser[,outputColumns(laser)] # Extracts all columns from a matrix whose column names begin with \"out\"\n# Split the input data (1000) into train (850) and test (150) specified by the argument ratio=0.15\npatterns <- splitForTrainingAndTest(inputs, targets, ratio = 0.15)\n\n# Plot the data\nplot(c(0,100),c(0,0.8),type = \"n\",xlab = \"Index\", ylab = \"Values\",main = \"Data\")\nlines(inputs[1:100],col=\"black\",lwd=2.5) # Plot Data 1\nlines(targets[1:100],col=\"blue\",lwd=2.5) # Plot Data 2\nlegend(0.0,0.8, # places a legend at the appropriate place \n       c(\"inputs\",\"targets\"), # puts text in the legend\n       lty=c(1,1), # gives the legend appropriate symbols (lines)\n       lwd=c(2.5,2.5),col=c(\"black\",\"blue\")) # gives the legend lines the correct color and width\n\n\n### ---- Example: 1. Regression with recurrent neural networks  ----\n# The use of an Elman network (Elman 1990) for time series regression. \nmodel <- elman(patterns$inputsTrain, patterns$targetsTrain,\n               size = c(8, 8), learnFuncParams = c(0.1), maxit = 500,\n               inputsTest = patterns$inputsTest, targetsTest = patterns$targetsTest,\n               linOut = FALSE)\n\n# input data and fitted values can be visualized in the following way:\n# Plot the data\nplot(c(0,100),c(0,0.9),type = \"n\",xlab = \"Index\", ylab = \"Values\",main = \"Data\")\nlines(inputs[1:100],col=\"black\",lwd=2.5) # Plot Data 1 - Train \nlines(targets[1:100],col=\"blue\",lwd=2.5) # Plot Data 2 - Targets\nlines(model$fitted.values[1:100], col = \"red\",lwd=2.5)  # Plot Data 3 predicted\nlegend(2.5,0.9, # places a legend at the appropriate place \n       c(\"inputs\",\"targets\",\"modeled\"), # puts text in the legend\n       lty=c(1,1), # gives the legend appropriate symbols (lines)\n       lwd=c(2.5,2.5),col=c(\"black\",\"blue\",\"red\")) # gives the legend lines the correct color and width\n\nplot(c(0,150),c(0,0.9),type = \"n\",xlab = \"Index\", ylab = \"Values\",main = \"Data\")\n# lines(inputs[1:100],col=\"black\",lwd=2.5) # Plot Data 1 - Train \nlines(targets[851:1000],col=\"blue\",lwd=2.5) # Plot Data 2 - Targets\nlines(model$fittedTestValues, col = \"red\",lwd=2.5)  # Plot Data 3 predicted\nlegend(2.5,0.9, # places a legend at the appropriate place \n       c(\"Test targets\",\"Test modeled\"), # puts text in the legend\n       lty=c(1,1), # gives the legend appropriate symbols (lines)\n       lwd=c(2.5,2.5),col=c(\"blue\",\"red\")) # gives the legend lines the correct color and width\n\n# Plot Errors\n# Regression plot for the training data, showing an optimal linear fit (black), and linear fit to the training data (red).\nplotRegressionError(patterns$targetsTrain, model$fitted.values)\n# Regression plot for the test data. \nplotRegressionError(patterns$targetsTest, model$fittedTestValues)\n\n\n\n",
+    "created" : 1477504875097.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2438099727",
+    "id" : "BAC820B",
+    "lastKnownWriteTime" : 1477505303,
+    "last_content_update" : 1477505303356,
+    "path" : "~/My Files/Teachng/2018/Fall/Class 8/RNN Code/NuNet.Regression.R",
+    "project_path" : "NuNet.Regression.R",
+    "properties" : {
+        "tempName" : "Untitled2"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

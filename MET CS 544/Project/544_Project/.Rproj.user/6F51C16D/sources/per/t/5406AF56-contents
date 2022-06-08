@@ -1,0 +1,292 @@
+---
+title: "Stock Analysis"
+author: "Hao Wu, Nimish Bendre"
+date: "5/2/2022"
+output:
+  html_document: default
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+rm(list=ls()); cat("\014") ## clear workspace
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r message=FALSE, warning=FALSE, include=FALSE}
+# import all tools and library which we need to used
+library(dplyr)
+library(ggplot2)
+library(plotly)
+library(tibbletime)
+library(lubridate)
+library(randomForestSRC)
+library(caret)
+```
+## Dataset Detail
+
+
+This dataset contains the daily recorded stock prices (and more) for the company, from day one that they went public.
+
+Twitter, originally founded in 2006, has been publicly-traded since November 2013, when it held an initial public offering that raised $1.8 billion.
+
+Twitter, Inc. operates as a platform for public self-expression and conversation in real-time. The company offers Twitter, a platform that allows users to consume, create, distribute, and discover content.
+
+The company is now in the midst of a battle of take over with Elon Musk for a by out of $46+ billion and since stock prices have soared.
+```{r echo=FALSE, message=FALSE}
+Twitter <- read.csv(file = 'DATA/TWTR.csv')
+head(Twitter)
+```
+
+## Objective
+The objective of this project is analysis the stock and predict the stock is gain or loss.
+
+## Data Preprocessing
+The dataset contain 7 variables and 1758 rows data. We need remove all NA value before we start to 
+analysis.
+
+The 2013s data is small size of our sampling, so that we decided to remove it.
+
+We group the data by year and month 's mean to anaylsis, and we also need transform the volume's unit as 1 million which will fit our other variables.
+
+```{r echo=FALSE, message=FALSE, paged.print=FALSE}
+##Check Null value
+Twitter <- na.omit(Twitter)
+which(is.na(Twitter))
+
+Twitter$Date <- as.Date(Twitter$Date)
+## Drop 2013 stock data, because it is small size and useless
+Twitter <- Twitter %>%
+  mutate(Year = year(Date))
+Twitter <- subset(Twitter, Twitter['Year'] > 2013)
+## Get the varaible which we need to use
+DF <- Twitter %>%
+  summarise(Date = Date,Open = Open,High = High, Low = Low, Volume = round(Volume/1000000, 2))
+
+## Set Column "Date" as date format
+DF$Date <- as.Date(DF$Date)
+fig <- plot_ly(DF, x = ~Date, y = ~Open, name = 'Open', type = 'scatter', mode = 'lines') 
+fig <- fig %>% add_trace(y = ~Volume, name = 'Volume', mode = 'lines') 
+fig <- fig %>% add_trace(y = ~High, name = 'High', mode = 'lines') 
+fig <- fig %>% add_trace(y = ~Low,  name = 'Low', mode = 'lines')
+fig <- fig %>% layout(title = "Variable Trend",
+                      xaxis = list(title = "Date"),
+                      yaxis = list (title = "Value"))
+fig
+```
+
+## Boxplot for each variable
+Volume has many outliers, but we know that if a large institution enters the stock market, the price will change drastically, and at the same time, the volume will suddenly rise.
+
+```{r echo=FALSE}
+figbox <- plot_ly(y = ~DF$Open, type = "box",name="Open")
+figbox <- figbox %>% add_trace(y = ~DF$Volume, name="Volume")
+figbox <- figbox %>% add_trace(y = ~DF$High, name="High")
+figbox <- figbox %>% add_trace(y = ~DF$Low, name="Close")
+figbox <- figbox %>% layout(title = "Boxplot for Open and Volume",
+                            xaxis = list(title = "Variables"),
+                      yaxis = list (title = "Value"))
+
+figbox
+```
+### Distribution of All variable
+The figure shows the normal distribution, left skew, so this data is valuable for us to analyze.
+
+```{r echo=FALSE}
+y1 <- dnorm(DF$Open,mean = mean(DF$Open), sd = sd(DF$Open))
+y2 <- dnorm(DF$Volume,mean = mean(DF$Volume), sd = sd(DF$Volume))
+y3 <- dnorm(DF$High,mean = mean(DF$High), sd = sd(DF$High))
+y4 <- dnorm(DF$Low,mean = mean(DF$Low), sd = sd(DF$Low))## Draw distribution
+figdis1 <- plot_ly(DF, x = ~DF$Open, y = y1, type = 'scatter', mode = 'markers') 
+figdis1 <- figdis1 %>% layout(title = "Distribution of Open",
+                            xaxis = list(title = "Open"),
+                      yaxis = list (title = "Destiny"))
+figdis2 <- plot_ly(DF, x = ~DF$Volume, y = y2, type = 'scatter', mode = 'markers') 
+figdis2 <- figdis2 %>% layout(title = "Distribution of Open",
+                            xaxis = list(title = "Volume"),
+                      yaxis = list (title = "Destiny"))
+figdis3 <- plot_ly(DF, x = ~DF$High, y = y3, type = 'scatter', mode = 'markers') 
+figdis3 <- figdis3 %>% layout(title = "Distribution of Open",
+                            xaxis = list(title = "High"),
+                      yaxis = list (title = "Destiny"))
+figdis4 <- plot_ly(DF, x = ~DF$Low, y = y4, type = 'scatter', mode = 'markers') 
+figdis4 <- figdis4 %>% layout(title = "Distribution of Open",
+                            xaxis = list(title = "Low"),
+                      yaxis = list (title = "Destiny"))
+
+annotations = list( 
+  list( 
+    x = 0.2,  
+    y = 1.0,  
+    text = "Open",  
+    xref = "paper",  
+    yref = "paper",  
+    xanchor = "center",  
+    yanchor = "bottom",  
+    showarrow = FALSE 
+  ),  
+  list( 
+    x = 0.8,  
+    y = 1,  
+    text = "Volume",  
+    xref = "paper",  
+    yref = "paper",  
+    xanchor = "center",  
+    yanchor = "bottom",  
+    showarrow = FALSE 
+  ),  
+  list( 
+    x = 0.2,  
+    y = 0.4,  
+    text = "High",  
+    xref = "paper",  
+    yref = "paper",  
+    xanchor = "center",  
+    yanchor = "bottom",  
+    showarrow = FALSE 
+  ),
+  list( 
+    x = 0.8,  
+    y = 0.4,  
+    text = "Low",  
+    xref = "paper",  
+    yref = "paper",  
+    xanchor = "center",  
+    yanchor = "bottom",  
+    showarrow = FALSE 
+  ))
+figdis <- subplot(figdis1, figdis2, figdis3, figdis4, nrows = 2)%>%
+  layout(title = 'Distribution for all variables', annotations = annotations)
+
+
+figdis
+
+```
+## Group data by year and month 
+This step could make us more easier to understand what's the relationship between thoese variables.
+
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+X <- DF %>%
+  mutate(Year = year(Date),Month = month(Date),
+         .after = Date)
+
+X <- X %>%
+  group_by(Year, Month)%>%
+  summarise(Open = mean(Open),
+            Volume = mean(Volume),
+            High = mean(High),
+            Low = mean(Low))
+
+
+X <- X %>%
+  mutate(date = make_date(Year, Month), .before=Year)%>%
+  subset( select = c('date','Open','Volume','High','Low'))
+fig2 <- plot_ly(X, type = 'scatter', mode = 'lines')%>%
+  add_trace(x = ~date, y = ~Open, name = 'Open')%>%
+  add_trace(x = ~date, y = ~Volume, name= 'Volume')%>%
+  add_trace(x = ~date, y = ~High, name= 'High')%>%
+  add_trace(x = ~date, y = ~Low, name= 'Low')%>%
+  layout(title = "Trend of Variables by mean",
+                            xaxis = list(title = "Year"),
+                      yaxis = list (title = "Value"))
+fig2
+```
+## Central Limit Theorem
+As shown in the boxplot and dot plot above, all variables are distributed with a left skew distribution.Below are histograms showing the sample means of 5000 random samples of sample sizes 10, 20, 30, and 40 following a normal distribution
+
+```{r echo=FALSE}
+set.seed(100)
+samples <- 1000
+sample <- numeric(samples)
+par(mfrow = c(2,2))
+for (size in c(10, 20, 30, 40)) {
+  for (i in 1:samples) {
+    sample[i] <- mean(sample(DF$Open, size = size, 
+                           replace = FALSE))
+  }
+  hist(sample, prob = TRUE, 
+       main = paste("Sample Size =", size))
+  
+  cat("Sample Size = ", size, " Mean = ", mean(sample),
+      " SD = ", sd(sample), "\n")
+}
+par(mfrow = c(1,1))
+```
+
+
+## Random Forest
+### Introduction
+Random forest is an algorithm that integrates multiple trees through the idea of ensemble learning. Its basic unit is a decision tree, and its essence belongs to a major branch of machine learning - the ensemble learning (Ensemble Learning) method.
+Its essence is to form each tree by randomly picking observations (rows) and variables (columns)
+
+We can summary that Random Forest is Bagging + Decision Tree.
+
+Bagging :bootstrap aggregating.
+
+The essence is to sample multiple times, and let the learning algorithm train for multiple rounds. The training set of each round consists of n training samples randomly selected from the initial training set, and a training sample may appear multiple times in a certain training set or does not appear.
+
+### Important parameter
+mtry : The case of a single decision tree decision tree.
+
+ntree: Overall size of random forest.
+
+Generally, the selection of mtry is to try one by one until an ideal value is found. The selection of ntree can roughly judge the value when the error in the model is stable through the graph.
+
+### Mtry parameter
+Through the test, we know that when mtry is equal to 4, the error value is the smallest, so we choose 4.
+
+```{r echo=FALSE, message=FALSE}
+a <- sample(2, nrow(Twitter), replace = TRUE, prob = c(0.6,0.4))
+set.seed(100)
+data1 <- Twitter[a == 1,]
+data2 <- Twitter[a == 2,]
+
+## We start to label it. 0 mean gain, 1 mean lose. When Open = Close, we gain.
+data1$Label <- ifelse(data1$Open > data1$Close, 1,
+                      ifelse(data1$Open < data1$Close , 0, 0))
+data1 <- subset(data1, select = c('Open','High','Low','Volume','Label'))
+data2$Label <- ifelse(data2$Open > data2$Close, 1,
+                      ifelse(data2$Open < data2$Close , 0, 0))
+data2 <- subset(data2, select = c('Open','High','Low','Volume','Label'))
+
+
+data1$Label <- as.factor(data1$Label)
+data2$Label <- as.factor(data2$Label)
+
+
+n <- length(names(data1))
+set.seed(100)
+## Select mtry number
+for(i in 1:4){
+  mtry <- rfsrc(Label~., data1, mtry=i)
+  error <- mean(mtry$err.rate, na.rm = TRUE)
+  print(error)
+}
+```
+
+## Select ntree
+
+```{r echo=FALSE}
+## Select 4 as mtry paramter
+set.seed(100)
+
+## Find out best ntree
+ntree <-rfsrc(Label~.,data1,mtry=4, ntree=800, importance = TRUE)
+plot(ntree)
+
+
+```
+
+## Start modeling then output the TP table
+```{r echo=FALSE}
+## Start to modeling, then plot
+rf <- rfsrc(Label~., data1, mtry=4, ntree = 400, importance = TRUE)
+rf
+## Use model to predict gain or lose, then output confusion_matrix
+pred1 <-predict.rfsrc(rf,data2)
+cf <- table(data2$Label, pred1$class, dnn = c('Actual','Predicted'))
+cf
+
+
+```

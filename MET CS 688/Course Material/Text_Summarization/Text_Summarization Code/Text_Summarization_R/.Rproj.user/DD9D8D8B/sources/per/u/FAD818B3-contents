@@ -1,0 +1,56 @@
+nn <- 111
+x <- e_measure[nn,] 
+max.val <- sort(x, decreasing = TRUE)[Number.of.Sentences ] # 81.79398
+ix <- which(x>=max.val) # 3  67  78 102 130
+e_measure[nn,ix] # 21  25  68  80 106
+
+ix1 <- which(e_measure1[,nn] > 0)
+e_measure1[ix1,nn]
+
+zx <- c()
+for (nn in 1:dim(e_measure1)[1]) {
+  ix <- which(e_measure1[,nn] > 0)
+  zx <- c(zx, sum(e_measure1[ix,nn]== e_measure[nn,ix]))
+}
+
+zz <- matrix(c(1:16),nrow=4, ncol=4)
+diag(zz) <- 0
+yy <- apply(zz, 1, function(x) { 
+  # ss <- mean(x); ss+1 }
+  max.val <- sort(x, decreasing = TRUE) [ 2 ];  
+  ix <- which(x < max.val); 
+  x[ ix ] <- 0; 
+  x }
+  )
+yy <- t(yy)
+
+pp <- pmax(yy,t(yy))
+ss <- graph.adjacency(pp, mode = "undirected", weighted = TRUE)
+evzz <- evcent(ss)
+ll <- evzz$value; vv <- evzz$vector
+
+ev1 <- eigen(yy); ll1 <- diag(1, 4)*ev1$values; vv1 <- ev1$vectors 
+vv1 * ll1 * t(vv1)
+
+# Another Example
+A1 <- matrix(c(13, -4, 2, -4, 11, -2, 2, -2, 8), 3, 3, byrow=TRUE) 
+ev1 <- eigen(A1)
+ll1 <- ev1$values # 17  8  7
+LL1 <- diag(1, length(ll1))*ll1
+vv1 <- ev1$vectors
+zapsmall(crossprod(vv1)) # Orthonormality 
+crossprod(vv1[,1],vv1[,1]) # Orthonormality Cross Product
+vv1[,1] %*% vv1[,1] # Unit Length Dot Product
+vv1[,1] %*% vv1[,2] # Normal => Dot Product %*% 
+vv1 %*% LL1 %*% t(vv1) # Reproduce A1 
+
+yy <- A1
+pp <- pmax(yy,t(yy))
+ss <- graph.adjacency(pp, mode = "undirected", weighted = TRUE)
+evzz <- evcent(ss)
+ll <- evzz$value; vv <- evzz$vector
+order(vv, decreasing = TRUE)
+
+
+
+

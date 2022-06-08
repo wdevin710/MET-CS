@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1625696035974.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "862081112",
+    "id" : "3260A765",
+    "lastKnownWriteTime" : 1625790489,
+    "last_content_update" : 1625790489557,
+    "path" : "D:/Teachng/2021/Summer/Class 6 Web Mining/Shiny_Quotes_Example/server.R",
+    "project_path" : "server.R",
+    "properties" : {
+        "cursorPosition" : "3,16",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

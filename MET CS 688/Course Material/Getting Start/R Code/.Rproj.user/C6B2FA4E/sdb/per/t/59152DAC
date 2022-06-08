@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "# # ###--- Matching Operations ---- \nPattern <- \"F+\" \nTextData <- c(\"FCX\", \"B2Q\", \"BASF F\", \"FFF\")\n\n# Using --  grep() and grepl()\ngrep(Pattern, TextData, perl=TRUE, value=FALSE)\n\ngrepl(Pattern, TextData, perl=TRUE)\n\nregexpr(Pattern, TextData, perl=TRUE)\n\ngregexpr(Pattern, TextData, perl=TRUE)\n\n\n# Using --  which()\nwhich(TextData != \"B2Q\") \nmatch(c(\"FCX\", \"B2Q\", \"BASF F\", \"FFF\"), \"B2Q\")\nmatch(c(\"FCX\", \"B2Q\", \"BASF F\", \"FFF\"), \"FF\")\n\n# Using --  %in%\nc(\"FCX\",\"B2Q\", \"BASF\")  %in% c(\"FCX\", \"B2Q\", \"BASF F\", \"FFF\")\n\nc(\"FCX\", \"B2Q\", \"BASF F\", \"FFF\") %in% c(\"FCX\",\"B2Q\", \"BASF\") \n",
+    "created" : 1517431838925.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "3793270436",
+    "id" : "59152DAC",
+    "lastKnownWriteTime" : 1466530837,
+    "last_content_update" : 1466530837,
+    "path" : "~/My Files/Teachng/2019/Spring/Getting Started with R/FCX_Examples_4.R",
+    "project_path" : "FCX_Examples_4.R",
+    "properties" : {
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

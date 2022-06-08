@@ -1,0 +1,2 @@
+"0","Twitter <- read.csv(file = 'DATA/TWTR.csv')"
+"0","head(Twitter)"

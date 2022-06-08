@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "## R Examples 2\n\n\n# ---- Paths in R - Examples -------\n# --- File Import \npth <- file.path(\"c:\", \"Users\", \"ZlatkoFCX\",\"Documents\",\"FCX\",\"R Files\",\"Insert ECfg\")\nCSV.files <- list.files(pth,\".csv\") # List of files with pattern \".csv\"\nR.files <- list.files(pth,\".R\") # List of files with pattern \".R\"\nImport.Files <- file.path(pth,\"VAV007_OrigConfig.csv\") # Specific File Name to Import \nImport.Files <- file.path(pth,CSV.files[2]) # Another Way  \n\n# Ways to Import a File\ntemp.CSV <- read.csv(Import.Files,stringsAsFactors = FALSE,blank.lines.skip = TRUE,header=F)\ntemp1.CSV <- read.csv(file.path(pth,\"temp.csv\"),stringsAsFactors = FALSE,blank.lines.skip = TRUE,header=F)\n\n\n# ###--- Set Operations ----\na <- c(\"asd\",\"qwer\",\"zxcvb\")\nb <- c(\"qwer\",\"asd\",\"zxcvb\",\"poi\")\nsetdiff(b,a) # Difference (larger first)\nintersect(a,b) # Common \n\n\n# ---- Moving data between R and the clipboard  -------\n# --- Clipboard Import & Edditing \ny1 <- readClipboard() # Set 1 from \"Two_Sets_Example.xlsx\"\ny1 <-  gsub(\"-\",\"_\",y1) # Replace \"-\" with \"_\"\n\ny2 <- readClipboard() # Set 2 from \"Two_Sets_Example.xlsx\"\ny2 <- paste0(\"ECfg_\",y2) # Paste & Insert Names\n\n#--- Set Operations\nDifference1 <- setdiff(y1,y2) # What is Different in y1\nDifference2 <- setdiff(y2,y1) # What is Different in y2\nCommon <- intersect(y1,y2) # Common \n\n#--- Export to Clipboard \nwriteClipboard(as.character(Difference)) # Place it on Clipboard \nwriteClipboard(as.character(Common)) # Place it on Clipboard \n\n#--- Import Numbers from Excel \ny <- scan() \n\n\n# ---- Moving data between R and the clipboard  ------- \n\n\n\n",
+    "created" : 1517431832116.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2261417273",
+    "id" : "6730ED8",
+    "lastKnownWriteTime" : 1460412338,
+    "last_content_update" : 1460412338,
+    "path" : "~/My Files/Teachng/2019/Spring/Getting Started with R/FCX_Examples_2.R",
+    "project_path" : "FCX_Examples_2.R",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

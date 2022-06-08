@@ -1,0 +1,25 @@
+# 
+rm(list=ls()); cat("\014") # Clear Workspace and Console
+A <- c(0,0,0) 
+B <- c(0,4,0) 
+E <- c(d,0,6) 
+D <- c(-6,0,6) 
+
+AB <- A-B # [0 -4  0]
+BD <- B-D # [0  4 -6]
+BE <- B-E # [-d  4 -6]
+
+# Find Norm
+norm_AB <- sqrt( (AB[1])^2 + (AB[2])^2 + (AB[3])^2 ) # 4
+norm_BD <- sqrt( (BD[1])^2 + (BD[2])^2 + (BD[3])^2 ) # 9.380832
+norm_BE <- sqrt( (AB[1])^2 + (AB[2])^2 + (AB[3])^2 ) # 
+
+# Find Unit Vectors
+unit_AB <- AB/norm_AB # [0, -1, 0] 
+unit_BD <- BD/norm_BD # [0.6396021  0.4264014 -0.6396021] 
+
+# Find the Components of the Forces
+F_AB_m <- 400 # Magnitude Given
+F_AB <- A_AB_m * unit_AB # Force Components
+
+

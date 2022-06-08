@@ -1,0 +1,298 @@
+<!-- BubbleChart generated in R 4.0.5 by googleVis 0.6.12 package -->
+<!-- Wed Apr 27 23:29:51 2022 -->
+
+
+<!-- jsHeader -->
+<script type="text/javascript">
+ 
+// jsData 
+function gvisDataBubbleChartID70aa1bf6dd5a () {
+var data = new google.visualization.DataTable();
+var datajson =
+[
+ [
+"data",
+1,
+32,
+"data",
+32
+],
+[
+"cases",
+1,
+27,
+"cases",
+27
+],
+[
+"set",
+1,
+21,
+"set",
+21
+],
+[
+"data",
+2,
+20,
+"data",
+20
+],
+[
+"listv1",
+2,
+13,
+"listv1",
+13
+],
+[
+"warehouse",
+2,
+10,
+"warehouse",
+10
+],
+[
+"machine",
+3,
+4,
+"machine",
+4
+],
+[
+"navbar",
+3,
+4,
+"navbar",
+4
+],
+[
+"neural",
+3,
+4,
+"neural",
+4
+],
+[
+"data",
+4,
+32,
+"data",
+32
+],
+[
+"listv1",
+4,
+18,
+"listv1",
+18
+],
+[
+"system",
+4,
+18,
+"system",
+18
+],
+[
+"economics",
+5,
+10,
+"economics",
+10
+],
+[
+"listv1",
+5,
+6,
+"listv1",
+6
+],
+[
+"navbar",
+5,
+4,
+"navbar",
+4
+],
+[
+"listv1",
+6,
+10,
+"listv1",
+10
+],
+[
+"theory",
+6,
+8,
+"theory",
+8
+],
+[
+"mathematics",
+6,
+6,
+"mathematics",
+6
+],
+[
+"listv1",
+7,
+24,
+"listv1",
+24
+],
+[
+"statistics",
+7,
+22,
+"statistics",
+22
+],
+[
+"linear",
+7,
+21,
+"linear",
+21
+],
+[
+"war",
+8,
+208,
+"war",
+208
+],
+[
+"civil",
+8,
+99,
+"civil",
+99
+],
+[
+"coup",
+8,
+58,
+"coup",
+58
+],
+[
+"war",
+9,
+101,
+"war",
+101
+],
+[
+"battle",
+9,
+43,
+"battle",
+43
+],
+[
+"years",
+9,
+30,
+"years",
+30
+],
+[
+"war",
+10,
+54,
+"war",
+54
+],
+[
+"september",
+10,
+24,
+"september",
+24
+],
+[
+"soviet",
+10,
+18,
+"soviet",
+18
+] 
+];
+data.addColumn('string','Terms');
+data.addColumn('number','Docs');
+data.addColumn('number','Freq');
+data.addColumn('string','Terms.1');
+data.addColumn('number','Freq.1');
+data.addRows(datajson);
+return(data);
+}
+ 
+// jsDrawChart
+function drawChartBubbleChartID70aa1bf6dd5a() {
+var data = gvisDataBubbleChartID70aa1bf6dd5a();
+var options = {};
+options["width"] = 1000;
+options["height"] = 800;
+
+
+    var chart = new google.visualization.BubbleChart(
+    document.getElementById('BubbleChartID70aa1bf6dd5a')
+    );
+    chart.draw(data,options);
+    
+
+}
+  
+ 
+// jsDisplayChart
+(function() {
+var pkgs = window.__gvisPackages = window.__gvisPackages || [];
+var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
+var chartid = "corechart";
+  
+// Manually see if chartid is in pkgs (not all browsers support Array.indexOf)
+var i, newPackage = true;
+for (i = 0; newPackage && i < pkgs.length; i++) {
+if (pkgs[i] === chartid)
+newPackage = false;
+}
+if (newPackage)
+  pkgs.push(chartid);
+  
+// Add the drawChart function to the global list of callbacks
+callbacks.push(drawChartBubbleChartID70aa1bf6dd5a);
+})();
+function displayChartBubbleChartID70aa1bf6dd5a() {
+  var pkgs = window.__gvisPackages = window.__gvisPackages || [];
+  var callbacks = window.__gvisCallbacks = window.__gvisCallbacks || [];
+  window.clearTimeout(window.__gvisLoad);
+  // The timeout is set to 100 because otherwise the container div we are
+  // targeting might not be part of the document yet
+  window.__gvisLoad = setTimeout(function() {
+  var pkgCount = pkgs.length;
+  google.load("visualization", "1", { packages:pkgs, callback: function() {
+  if (pkgCount != pkgs.length) {
+  // Race condition where another setTimeout call snuck in after us; if
+  // that call added a package, we must not shift its callback
+  return;
+}
+while (callbacks.length > 0)
+callbacks.shift()();
+} });
+}, 100);
+}
+ 
+// jsFooter
+</script>
+ 
+<!-- jsChart -->  
+<script type="text/javascript" src="https://www.google.com/jsapi?callback=displayChartBubbleChartID70aa1bf6dd5a"></script>
+ 
+<!-- divChart -->
+  
+<div id="BubbleChartID70aa1bf6dd5a" 
+  style="width: 1000; height: 800;">
+</div>

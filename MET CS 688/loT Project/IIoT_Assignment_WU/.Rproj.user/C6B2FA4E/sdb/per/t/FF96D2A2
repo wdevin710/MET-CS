@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "# RSNNS Energy Consumption Forecast\nrm(list=ls()); cat(\"\\014\") # clear all\nlibrary(\"RSNNS\")\nsource(\"Project Functions.R\") # This is the Lab version of the code\n\n# Read Data from CSV\nPath.2.Files <- file.path(\"Data\",\"OficeBuildingData.csv\") # Path to CSV File\nInputData <- read.csv(Path.2.Files,stringsAsFactors = FALSE,\n                      blank.lines.skip = TRUE,header=T) # Read CSV File\n\n\n# Call Forecast Function to Train NN & Obtain Predictions\nOutput <- Forecast.Electric.Demand(InputData)\n\n\n# Plot Results \nRange.to.Plot <- seq(from = round(dim(InputData)[1]*(1-Output$Percent.To.Test)), to = dim(InputData)[1])\nTitle <- \"NN Trained to Model Office building Energy Consumption based on Temperature, Humidity and Dewpoint\"\nTitle <- paste(Title,paste0(\"(Train End Date is \", Output$TimeStamp[Range.to.Plot[1]]),\")\")\n\n# ### ====== Claculate Residuals ====\nY <- InputData$Electric.Demand..kW.; Yp <- unlist(Output$Predicted.Electric.Demand)\nR2 <- 1 - sum( (Yp-Y )^2 ) / sum( (Y-mean(Y) )^2 ) # Coeff of determination (R-squared)\nTitle <- paste0(Title,\"; R Squared:\",round(R2,2))\n\n\n# ### ====== Plot Results ====\nlibrary(plotly)\nPlotData <- data.frame(x=Output$TimeStamp, \n                       y1=InputData$Electric.Demand..kW., \n                       y2=unlist(Output$Predicted.Electric.Demand))\n\np <- plot_ly(PlotData, x=~x, y=~y1, name = 'Actual Electric Demand (kW)', type = 'scatter', mode = 'lines')\np <- add_trace(p,y=~y2, name = 'RNN Forecasted Demand (kWh)', mode = 'lines', symbol = I(1), marker = list(size = 5)) # add another line\n\n\np <- p %>% layout(title = Title,\n                  xaxis = list(title = 'Date',\n                               zeroline = TRUE),\n                  yaxis = list(title = 'Electric Demand (kW)',\n                               range = c(0,max(InputData$Electric.Demand..kW.))))\n\np # To Plot type \"p\" in console\n\n\n\n",
+    "created" : 1533237016486.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "4148739909",
+    "id" : "FF96D2A2",
+    "lastKnownWriteTime" : 1533237031,
+    "last_content_update" : 1533237031561,
+    "path" : "~/My Files/Teachng/2018/Summer/Classroom/Class 9/IoT Code/IIoT Lab/IIoT_Run.R",
+    "project_path" : "IIoT_Run.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
