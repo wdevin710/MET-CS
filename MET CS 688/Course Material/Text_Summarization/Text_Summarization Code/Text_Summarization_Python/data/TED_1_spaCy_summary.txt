@@ -1,7 +1,0 @@
-These scientists think that if we built a vast network of radon-thoron detectors in earthquake-prone areas, it could become a promising warning system– potentially predicting quakes a week in advance. 
-With a deeper view we might be able to track and predict large-scale geological changes in real time, possibly saving tens of thousands of lives a year. 
-In 2011, just before an earthquake struck the east coast of japan, nearby researchers recorded surprisingly high concentrations of the radioactive isotope pair: radon and thoron. 
-Earth’s crust is made from several vast, jagged slabs of rock called tectonic plates, each riding on a hot, partially molten layer of earth’s mantle. 
-Today, we no longer rely on pots to identify seismic events, but earthquakes still offer a unique challenge to those trying to track them. 
-With a network of phones around the globe, scientists could potentially crowdsource a rich, detailed warning system that alerts people to incoming quakes. 
-Geologists have long used seismometers to track and map these tiny shifts in the earth’s crust.
