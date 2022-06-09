@@ -1,3 +1,4 @@
 # MET-CS
 All Document Created during Master Study.
-Python + R
+Learning Material created by Professor
+Assignment Coding Part completed individual.
