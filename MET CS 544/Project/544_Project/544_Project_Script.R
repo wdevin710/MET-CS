@@ -1,5 +1,5 @@
 ## 544 Final Project
-## Hao Wu, Nimish Bendre    
+## Hao Wu   
 ## Twitter daily stock prices 2013 to 2022
 
 rm(list=ls()); cat("\014") ## clear workspace
