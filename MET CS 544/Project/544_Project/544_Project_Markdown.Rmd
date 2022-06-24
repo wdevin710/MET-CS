@@ -1,6 +1,6 @@
 ---
 title: "Stock Analysis"
-author: "Hao Wu, Nimish Bendre"
+author: "Hao Wu"
 date: "5/2/2022"
 output:
   html_document: default
